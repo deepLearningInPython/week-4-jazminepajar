@@ -48,11 +48,21 @@ print(tokens)
 # Your code here:
 # -----------------------------------------------
 def tokenize(string: str) -> list:
-    ls = []
-    for word in string.split(" "): #tokenize
-        tok = word.strip(".,!?;:") #remove punctuation
-        ls.append(tok.lower()) #add to list + convet each token to lwoercase
-    return (sorted(set(ls))) # set is for : return unique words in alphabetical order
+    cleaned = []
+
+    for char in string.lower():
+        # keep only alphanumeric characters or whitespace
+        if char.isalnum() or char in [' ', '\n', '\t']:
+            cleaned.append(char)
+        else:
+            # replace punctuation with space so words don't merge
+            cleaned.append(" ")
+
+    # Join into string and split on whitespace
+    tokens = "".join(cleaned).split()
+
+    return tokens
+
 
 tokenize("I want a dog I")
 # -----------------------------------------------
@@ -108,10 +118,10 @@ def token_counts(string: str, k: int = 1) -> dict:
     ]
     result = {}
     for word in set(tokens):
-        count = tokens.count(word):
-        if count > k: 
+        count = tokens.count(word)
+        if count >= k: 
             result[word] = count
-        return result
+    return result
     ##My initial solution 
     #string_tok = tokenlow(string)
     #return {word: string_tok.count(word) for word in set(string_tok) if string_tok.count(word) > k}
@@ -207,14 +217,26 @@ all(i2t[t2i[tok]] == tok for tok in t2i) # should be True
 
 # Your code here:
 # -----------------------------------------------
-def tokenize_and_encode(documents: list) -> list:
-    # Hint: use your make_vocabulary_map and tokenize function
-    token2id, id2token = make_vocabulary_map(documents)
+
+def tokenize_and_encode(documents: list):
+    # Flatten all tokens across documents (preserve order for vocab)
+    all_tokens = []
+    for doc in documents:
+        all_tokens.extend(tokenize(doc))  # use your Task 2 tokenize (lowercase + punctuation removed)
+    
+    # Remove duplicates but preserve first occurrence
+    unique_tokens = list(dict.fromkeys(all_tokens))
+    
+    # Build token2id and id2token
+    token2id = {word: i for i, word in enumerate(unique_tokens)}
+    id2token = {i: word for word, i in token2id.items()}
+    
+    # Encode each document
     encoded_docs = []
-    for doc in documents: 
-        toks = tokenlow(doc)
-        encoded_doc = [token2id[word] for word in toks] # will return number
-        encoded_docs.append(encoded_doc)
+    for doc in documents:
+        toks = tokenize(doc)  # tokenize without removing duplicates
+        encoded_docs.append([token2id[t] for t in toks])
+    
     return encoded_docs, token2id, id2token
 
 # Test:
@@ -222,6 +244,8 @@ enc, t2i, i2t = tokenize_and_encode([text, 'What a luck we had today!'])
 print(enc, t2i)
 
 " | ".join([" ".join(i2t[i] for i in e) for e in enc]) == 'the quick brown fox jumps over the lazy dog | what a luck we had today'
+
+
 # -----------------------------------------------
 
 
