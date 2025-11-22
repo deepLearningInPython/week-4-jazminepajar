@@ -48,8 +48,11 @@ print(tokens)
 # Your code here:
 # -----------------------------------------------
 def tokenize(string: str) -> list:
-    tokens = [word.strip(".,!?;:").lower() for word in string.split()]
-    return (sorted(set(tokens))) # set is for unique
+    ls = []
+    for word in string.split(" "): #tokenize
+        tok = word.strip(".,!?;:") #remove punctuation
+        ls.append(tok.lower()) #add to list + convet each token to lwoercase
+    return (sorted(set(ls))) # set is for : return unique words in alphabetical order
 
 tokenize("I want a dog I")
 # -----------------------------------------------
@@ -82,7 +85,6 @@ tokenize("I want a dog I")
 def tokenlow(string: str) -> list:
     return [word.strip(".,!?;:").lower() for word in string.split()]
 tokens = tokenlow(text)
-print(tokens)
 word_frequencies = {word: tokens.count(word) for word in set(tokens)}
 
 # Expected output example: {'the': 2, 'quick': 1, ...}
@@ -100,8 +102,19 @@ print(word_frequencies2)
 # Your code here:
 # -----------------------------------------------
 def token_counts(string: str, k: int = 1) -> dict:
-    string_tok = tokenlow(string)
-    return {word: string_tok.count(word) for word in set(string_tok) if string_tok.count(word) > k}
+    tokens = [
+        word.strip(".,!??;:").lower()
+        for word in string.split()
+    ]
+    result = {}
+    for word in set(tokens):
+        count = tokens.count(word):
+        if count > k: 
+            result[word] = count
+        return result
+    ##My initial solution 
+    #string_tok = tokenlow(string)
+    #return {word: string_tok.count(word) for word in set(string_tok) if string_tok.count(word) > k}
 
 # test:
 text_hist = {'the': 2, 'quick': 1, 'brown': 1, 'fox': 1, 'jumps': 1, 'over': 1, 'lazy': 1, 'dog': 1}
