@@ -194,13 +194,25 @@ all(i2t[t2i[tok]] == tok for tok in t2i) # should be True
 
 # Your code here:
 # -----------------------------------------------
-def tokenize_and_encode(documents: list) -> list:
-    # Hint: use your make_vocabulary_map and tokenize function
+def tokenize(string: str) -> list:
+    """
+    Tokenize a string: remove punctuation, lowercase, split on whitespace.
+    Preserves the order of tokens and includes duplicates.
+    """
+    tokens = []
+    for word in string.split():
+        # remove punctuation
+        tok = word.strip(".,!?;:").lower()
+        if tok:  # skip empty
+            tokens.append(tok)
+    return tokens
+
+def tokenize_and_encode(documents: list):
     token2id, id2token = make_vocabulary_map(documents)
     encoded_docs = []
-    for doc in documents: 
-        toks = tokenlow(doc)
-        encoded_doc = [token2id[word] for word in toks] # will return number
+    for doc in documents:
+        toks = tokenize(doc)  # MUST preserve order here
+        encoded_doc = [token2id[t] for t in toks]
         encoded_docs.append(encoded_doc)
     return encoded_docs, token2id, id2token
 
