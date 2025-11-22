@@ -48,11 +48,8 @@ print(tokens)
 # Your code here:
 # -----------------------------------------------
 def tokenize(string: str) -> list:
-    ls = []
-    for word in string.split(" "):
-        tok = word.strip(".,!?;:")
-        ls.append(tok.lower())
-    return (sorted(set(ls))) # set is for unique
+    tokens = [word.strip(".,!?;:").lower() for word in string.split()]
+    return (sorted(set(tokens))) # set is for unique
 
 tokenize("I want a dog I")
 # -----------------------------------------------
