@@ -21,6 +21,7 @@ import numpy as np
 
 
 # Task 1: Given a paragraph of text, implement a simple "tokenizer" that splits the paragraph 
+
 #   into individual words (tokens) and removes any punctuation. Implement this using a list 
 #   comprehension.
 
@@ -29,12 +30,14 @@ import numpy as np
 text = "The quick brown fox jumps over the lazy dog!"
 
 # Write a list comprehension to tokenize the text and remove punctuation
-tokens = _ # Your code here
+#the words tokenized is tex.split(" ") by space
+#then will loop through each of those words and apply the action of
+#Stripping them from punctuations
+tokens = [word.strip(".,!?;:") for word in text.split(" ")]
 
 # Expected output: ['The', 'quick', 'brown', 'fox', 'jumps', 'over', 'the', 'lazy', 'dog']
 print(tokens)
 # -----------------------------------------------
-
 
 
 
@@ -45,9 +48,13 @@ print(tokens)
 # Your code here:
 # -----------------------------------------------
 def tokenize(string: str) -> list:
-    pass # Your code
+    ls = []
+    for word in string.split(" "):
+        tok = word.strip(".,!?;:")
+        ls.append(tok.lower())
+    return (sorted(set(ls))) # set is for unique
 
-
+tokenize("I want a dog I")
 # -----------------------------------------------
 
 
